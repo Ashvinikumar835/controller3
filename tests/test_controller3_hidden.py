@@ -214,26 +214,6 @@ async def test_hit_address_alignment(dut):
         data = await wait_for_response(dut)
         assert data == 0xFACEB00C, f"OFFSET HIT FAILED at offset {offset}"
 
-
-
-@cocotb.test()
-async def test_hit_address_alignment(dut):
-    await setup_dut(dut)
-
-    dut.valid.value = 1
-    dut.tag.value   = 0x44444
-    dut.data.value  = 0xFACEB00C
-    dut.dirty.value = 0
-
-    await RisingEdge(dut.clk)
-
-    base_addr = (0x44444 << 12)
-
-    # try different offsets (should still hit)
-    for offset in [0x0, 0x4, 0x8, 0xC]:
-        await send_request(dut, 0, base_addr + offset)
-        data = await wait_for_response(dut)
-        assert data == 0xFACEB00C, f"OFFSET HIT FAILED at offset {offset}"
 # ============================================================
 # RUNNER
 # ============================================================
@@ -244,7 +224,7 @@ def test_controller3():
     proj_path = Path(__file__).resolve().parent.parent
 
     sources = [
-        proj_path / "golden" / "controller3.v",
+        proj_path / "sources" / "controller3.v",
     ]
 
     runner = get_runner(sim)
