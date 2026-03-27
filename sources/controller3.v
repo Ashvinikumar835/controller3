@@ -1,5 +1,6 @@
 `timescale 1ns / 1ps
 
+
 module controller3 (
     input              clk,
     input              rst_n,
@@ -66,13 +67,13 @@ module controller3 (
         next_state = state;
 
         if (state == IDLE) begin
-            if (!req_valid)         
+            if (req_valid)
                 next_state = TAG_LOOKUP;
         end
 
         else if (state == TAG_LOOKUP) begin
-            if (valid | (tag != req_tag)) begin
-                if (req_rw == 1'b0)      
+            if (valid && (tag == req_tag)) begin
+                if (req_rw == 1'b0)
                     next_state = READ_HIT;
                 else
                     next_state = WRITE_HIT;
@@ -90,23 +91,24 @@ module controller3 (
         end
 
         else if (state == MISS_HANDLE) begin
-            if (valid | dirty)
+            if (valid && dirty)
                 next_state = WRITEBACK;
-           
+            else
+                next_state = ALLOCATE;
         end
 
         else if (state == WRITEBACK) begin
-            if (!mem_ready)
+            if (mem_ready)
                 next_state = ALLOCATE;
         end
 
         else if (state == ALLOCATE) begin
-            if (!mem_ready)
+            if (mem_ready)
                 next_state = REFILL;
         end
 
         else if (state == REFILL) begin
-            //logic
+            next_state = RESPOND;
         end
 
         else if (state == RESPOND) begin
@@ -132,7 +134,7 @@ module controller3 (
             mem_addr      <= 0;
             mem_wdata     <= 0;
         end else begin
-            
+            // Default outputs every cycle
             resp_valid    <= 0;
             mem_req_valid <= 0;
 
@@ -142,27 +144,32 @@ module controller3 (
 
             else if (state == WRITE_HIT) begin
                 data  <= req_wdata;
-                dirty <= 0;
+                dirty <= 1;
             end
 
             else if (state == WRITEBACK) begin
-                mem_req_valid <= 0;       
-            
-               
+                mem_req_valid <= 1;
+                mem_req_rw    <= 1; // write
+                mem_addr      <= {tag, 12'b0};
+                mem_wdata     <= data;
             end
 
             else if (state == ALLOCATE) begin
-                mem_req_valid <= 0;
-                                
+                mem_req_valid <= 1;
+                mem_req_rw    <= 0; // read
+                mem_addr      <= req_addr;
             end
 
             else if (state == REFILL) begin
-                //Internal logic
+                tag   <= req_tag;
+                valid <= 1;
 
                 if (req_rw) begin
-                    //Internal logic
+                    data  <= req_wdata;
+                    dirty <= 1;
                 end else begin
-                    //Internal logic
+                    data  <= mem_rdata;
+                    dirty <= 0;
                 end
             end
 
