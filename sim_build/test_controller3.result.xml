@@ -1,0 +1,11 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1774629512" />
+    <testcase name="test_read_hit" classname="test_controller3_hidden" file="/home/ashvinikumar/phinity/cursor/controller3/controller3/tests/test_controller3_hidden.py" lineno="91" time="0.001306772232055664" sim_time_ns="115.0" ratio_time="88003.09432585294" />
+    <testcase name="test_write_hit" classname="test_controller3_hidden" file="/home/ashvinikumar/phinity/cursor/controller3/controller3/tests/test_controller3_hidden.py" lineno="110" time="0.0009088516235351562" sim_time_ns="125.0" ratio_time="137536.20146904513" />
+    <testcase name="test_multiple_writes" classname="test_controller3_hidden" file="/home/ashvinikumar/phinity/cursor/controller3/controller3/tests/test_controller3_hidden.py" lineno="130" time="0.000774383544921875" sim_time_ns="125.0" ratio_time="161418.71921182267" />
+    <testcase name="test_clean_miss" classname="test_controller3_hidden" file="/home/ashvinikumar/phinity/cursor/controller3/controller3/tests/test_controller3_hidden.py" lineno="152" time="0.001041412353515625" sim_time_ns="175.00000000000006" ratio_time="168041.02564102568" />
+    <testcase name="test_dirty_miss" classname="test_controller3_hidden" file="/home/ashvinikumar/phinity/cursor/controller3/controller3/tests/test_controller3_hidden.py" lineno="170" time="0.0019063949584960938" sim_time_ns="365.0" ratio_time="191460.85042521261" />
+    <testcase name="test_hit_address_alignment" classname="test_controller3_hidden" file="/home/ashvinikumar/phinity/cursor/controller3/controller3/tests/test_controller3_hidden.py" lineno="198" time="0.0014600753784179688" sim_time_ns="265.0000000000001" ratio_time="181497.4787720445" />
+  </testsuite>
+</testsuites>
